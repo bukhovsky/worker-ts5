@@ -1,3 +1,7 @@
 name = "worker-ts5"
 main = "src/index.ts"
 compatibility_date = "2023-04-05"
+
+kv_namespaces = [
+  { binding = "KV", id = "253663604e1c4616a621f9d9db275452" }
+]
