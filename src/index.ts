@@ -28,15 +28,29 @@ export default {
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
-		
+
+		const corsHeaders = {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+			"Access-Control-Max-Age": "86400",
+		  }; 
+
+		const { pathname } = new URL(request.url)
 
 		const valuefromKV = await env.KV.get("001")
 		const stringValue = JSON.stringify(valuefromKV)
 
+		if (pathname.startsWith("/add")) {
+			const frombody = await request.body
+
+			await env.KV.put("999", "999 new item for KV")
+			return new Response(frombody, { headers: {
+				...corsHeaders
+			  } })
+		}
+
 		return new Response(stringValue, { headers: {
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
-			"Access-Control-Max-Age": "86400",
+			...corsHeaders
 		  } });
 	},
 };
