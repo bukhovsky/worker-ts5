@@ -41,13 +41,15 @@ export default {
 		const stringValue = JSON.stringify(valuefromKV)
 
 		if (pathname.startsWith("/add")) {
-			const frombody = await request.body
-
-			await env.KV.put("999", "999 new item for KV")
-			return new Response(frombody, { headers: {
-				...corsHeaders
-			  } })
-		}
+			const frombody = await request.json();
+			console.log(frombody);
+			const mystring = JSON.stringify(frombody);
+		   
+			await env.KV.put("99999", mystring);
+			return new Response(mystring, { headers: {
+			  ...corsHeaders
+			} });
+		  }
 
 		return new Response(stringValue, { headers: {
 			...corsHeaders
