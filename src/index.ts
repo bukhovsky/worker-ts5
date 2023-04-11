@@ -36,6 +36,17 @@ export default {
 		  }; 
 
 		const { pathname } = new URL(request.url)
+		
+		if (pathname.startsWith("/get")) {
+			const urlparameters = new URLSearchParams(request.url);
+			
+			const name =  urlparameters.get("key");
+			const productfromKV = await env.KV.get(name)
+			return new Response(productfromKV, { headers: {
+			  ...corsHeaders
+			} });
+		  }
+
 
 		const valuefromKV = await env.KV.get("001")
 		const stringValue = JSON.stringify(valuefromKV)
