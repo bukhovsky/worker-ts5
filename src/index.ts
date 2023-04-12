@@ -46,6 +46,14 @@ export default {
 			  ...corsHeaders
 			} });
 		  }
+		if (pathname.startsWith("/all")) {
+			const productslist = await env.KV.list()
+			const productskeys = productslist.keys
+			console.log(productskeys)
+			return new Response(JSON.stringify(productskeys), { headers: {
+				...corsHeaders
+			  } });
+		}
 
 
 		const valuefromKV = await env.KV.get("001")
