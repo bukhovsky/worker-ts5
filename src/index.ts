@@ -28,7 +28,8 @@ export default {
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
-
+		//to  allow brouser fetch this API
+		//must be changed on production
 		const corsHeaders = {
 			"Access-Control-Allow-Origin": "*",
 			"Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
@@ -37,18 +38,25 @@ export default {
 
 		const { pathname } = new URL(request.url)
 		
+		//TODO add error handlers 
+
+		//code for getting one product by provided key
 		if (pathname.startsWith("/get")) {
 			const urlparameters = new URLSearchParams(request.url);
 			
 			const name =  urlparameters.get("key");
 			const productfromKV = await env.KV.get(name)
+		
 			return new Response(productfromKV, { headers: {
 			  ...corsHeaders
 			} });
 		  }
+
+		//code for getting the list of all product 
 		if (pathname.startsWith("/all")) {
 			const productslist = await env.KV.list()
 			const productskeys = productslist.keys
+				//TODO: make a list using keys of all produst for Angular app
 			console.log(productskeys)
 			return new Response(JSON.stringify(productskeys), { headers: {
 				...corsHeaders
@@ -56,20 +64,23 @@ export default {
 		}
 
 
-		const valuefromKV = await env.KV.get("001")
-		const stringValue = JSON.stringify(valuefromKV)
-
+		//code for adding product to KV database
 		if (pathname.startsWith("/add")) {
 			const frombody = await request.json();
-			console.log(frombody);
 			const mystring = JSON.stringify(frombody);
 		   
+			//TODO: add real product reating and putting with eng name as a key and all product qualities as JSON 
+
 			await env.KV.put("99999", mystring);
 			return new Response(mystring, { headers: {
 			  ...corsHeaders
 			} });
 		  }
-
+		
+		//default rout: to be change to something like "welcome"
+		
+		const valuefromKV = await env.KV.get("001")
+		const stringValue = JSON.stringify(valuefromKV)
 		return new Response(stringValue, { headers: {
 			...corsHeaders
 		  } });
