@@ -70,15 +70,16 @@ export default {
 			const mystring = JSON.stringify(frombody);
 		   
 			//TODO: add real product reating and putting with eng name as a key and all product qualities as JSON 
-
-			await env.KV.put("99999", mystring);
+			const productobj = JSON.parse(mystring)
+			const productkey = productobj.engName
+			await env.KV.put(productkey, mystring);
 			return new Response(mystring, { headers: {
 			  ...corsHeaders
 			} });
 		  }
 		
 		//default rout: to be change to something like "welcome"
-		
+
 		const valuefromKV = await env.KV.get("001")
 		const stringValue = JSON.stringify(valuefromKV)
 		return new Response(stringValue, { headers: {
