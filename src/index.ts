@@ -56,9 +56,17 @@ export default {
 		if (pathname.startsWith("/all")) {
 			const productslist = await env.KV.list()
 			const productskeys = productslist.keys
+
+			const productsArrey: string[] = []
+			productskeys.forEach(
+				(keyobj) => { productsArrey.push(keyobj.name)}
+				
+			)
+			//const firstkey = productskeys[0].name
+			//const firstitem = await env.KV.get(firstkey)
 				//TODO: make a list using keys of all produst for Angular app
-			console.log(productskeys)
-			return new Response(JSON.stringify(productskeys), { headers: {
+			console.log(productsArrey)
+			return new Response(JSON.stringify(productsArrey), { headers: {
 				...corsHeaders
 			  } });
 		}
@@ -69,7 +77,6 @@ export default {
 			const frombody = await request.json();
 			const mystring = JSON.stringify(frombody);
 		   
-			//TODO: add real product reating and putting with eng name as a key and all product qualities as JSON 
 			const productobj = JSON.parse(mystring)
 			const productkey = productobj.engName
 			await env.KV.put(productkey, mystring);
