@@ -44,13 +44,17 @@ export default {
 		if (pathname.startsWith("/get")) {
 			const urlparameters = new URLSearchParams(request.url);
 			
-			const name =  urlparameters.get("key");
+			const name: string | null =  urlparameters.get("key");
+
+			if (typeof name === "string") {
 			const productfromKV = await env.KV.get(name)
-		
 			return new Response(productfromKV, { headers: {
 			  ...corsHeaders
-			} });
-		  }
+															}} );
+		  									} else {
+												throw new Error();
+												
+											}
 
 		//code for getting the list of all product 
 		if (pathname.startsWith("/all")) {
@@ -92,5 +96,5 @@ export default {
 		return new Response(stringValue, { headers: {
 			...corsHeaders
 		  } });
-	},
-};
+	}
+	}}
