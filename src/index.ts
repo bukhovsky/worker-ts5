@@ -53,7 +53,7 @@ export default {
 															}} );
 		  									} else {
 												throw new Error();
-												
+												};
 											}
 
 		//code for getting the list of all product 
@@ -91,10 +91,12 @@ export default {
 		
 		//default rout: to be change to something like "welcome"
 
-		const valuefromKV = await env.KV.get("001")
-		const stringValue = JSON.stringify(valuefromKV)
-		return new Response(stringValue, { headers: {
+		const welcomemessage = "Welcome to products database!"
+		
+		return new Response(welcomemessage, { headers: {
 			...corsHeaders
 		  } });
 	}
-	}}
+	
+
+}
